@@ -2,10 +2,12 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../providers/AuthProvider";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
     const {loginUser} = useContext(AuthContext)
+    const navigate = useNavigate();
 
     const handleLogin = e => {
         e.preventDefault();
@@ -19,12 +21,8 @@ const Login = () => {
         .then(userCredential => {
             const user = userCredential.user;
             console.log(user);
-            if(!user.emailVerified){
-                alert('plase varify your account')
-            }
-            else {
-                console.log('account varified');
-            }
+            e.target.reset();
+            navigate('/')
         })
         .catch((error) => {
             console.log(error);
