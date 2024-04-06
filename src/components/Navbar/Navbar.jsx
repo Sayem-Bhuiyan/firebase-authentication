@@ -20,7 +20,9 @@ const Navbar = () => {
   );
 
   useEffect( () => {
-    document.querySelector('html').setAttribute('data-theme', theme)
+    localStorage.setItem('theme', theme);
+    const currentTheme = localStorage.getItem('theme')
+    document.querySelector('html').setAttribute('data-theme', currentTheme)
   }, [theme])
 
   const handleTheme = (e) => {
