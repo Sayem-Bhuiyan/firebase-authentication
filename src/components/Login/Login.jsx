@@ -1,4 +1,6 @@
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link } from "react-router-dom";
+import auth from "../../firebase/firebase.config";
 
 const Login = () => {
 
@@ -8,6 +10,22 @@ const Login = () => {
         const password = e.target.password.value;
 
         console.log(email, password);
+
+        // sing in usesr
+        signInWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+            const user = userCredential.user;
+            console.log(user);
+            if(!user.emailVerified){
+                alert('plase varify your account')
+            }
+            else {
+                console.log('account varified');
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
 
   return (
