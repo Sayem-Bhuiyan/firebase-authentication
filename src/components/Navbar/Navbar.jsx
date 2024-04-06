@@ -1,9 +1,21 @@
-import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../providers/AuthProvider";
 
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
 
-    const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState("light");
+
+  const handleLogOut = () => {
+    logOut()
+    .then(() => {
+      console.log('user logout successfully');
+    })
+    .catch(error => {
+      console.log(error);
+    } )
+  }
 
   const navLinks = (
     <>
@@ -19,27 +31,26 @@ const Navbar = () => {
     </>
   );
 
-  useEffect( () => {
-    localStorage.setItem('theme', theme);
-    const currentTheme = localStorage.getItem('theme')
-    document.querySelector('html').setAttribute('data-theme', currentTheme)
-  }, [theme])
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+    const currentTheme = localStorage.getItem("theme");
+    document.querySelector("html").setAttribute("data-theme", currentTheme);
+  }, [theme]);
 
   const handleTheme = (e) => {
-    const checked = e.target.checked
-    if(checked){
-        setTheme("synthwave")
+    const checked = e.target.checked;
+    if (checked) {
+      setTheme("synthwave");
+    } else {
+      setTheme("light");
     }
-    else {
-      setTheme('light')
-    }
-  }
+  };
 
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden" >
+          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -106,6 +117,14 @@ const Navbar = () => {
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
         </label>
+
+        {user ? (
+          <div>
+            <button onClick={handleLogOut} className="btn btn-sm">Sign Out</button>
+          </div>
+        ) 
+        : <Link to='/login' className="btn btn-sm" >Login</Link>
+      }
       </div>
     </div>
   );

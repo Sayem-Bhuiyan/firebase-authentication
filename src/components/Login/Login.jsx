@@ -1,8 +1,11 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+
 import { Link } from "react-router-dom";
-import auth from "../../firebase/firebase.config";
+import { useContext } from "react";
+import { AuthContext } from "../providers/AuthProvider";
 
 const Login = () => {
+
+    const {loginUser} = useContext(AuthContext)
 
     const handleLogin = e => {
         e.preventDefault();
@@ -12,7 +15,7 @@ const Login = () => {
         console.log(email, password);
 
         // sing in usesr
-        signInWithEmailAndPassword(auth, email, password)
+        loginUser(email, password)
         .then(userCredential => {
             const user = userCredential.user;
             console.log(user);

@@ -1,8 +1,11 @@
-import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { Link } from "react-router-dom";
-import auth from "../../firebase/firebase.config";
+import { useContext } from "react";
+import { AuthContext } from "../providers/AuthProvider";
 
 const Register = () => {
+
+    const {createUser} = useContext(AuthContext);
+    console.log(createUser);
 
     const handleRegister = e => {
         e.preventDefault();
@@ -11,29 +14,36 @@ const Register = () => {
         const password = e.target.password.value;
         console.log(name,email, password);
 
-
-        // creating user
-        createUserWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
+        createUser(email, password)
+        .then((userCredential) => {
             const user = userCredential.user;
             console.log(user);
-
-            // updateProfile 
-            updateProfile(user, {
-                displayName: name , photoURL: 'https://i.postimg.cc/D0SdCtvF/1675442698903.jpg'
-            })
-            .then( () => console.log('profile updated'))
-            .catch(error => console.log(error))
-
-            sendEmailVerification(user)
-            .then(() => {
-                alert('varification email sent')
-            })
-            .catch(error => console.log(error))
         })
         .catch(error => {
-            console.log(error);
+            console.error(error);
         })
+        // creating user
+        // createUserWithEmailAndPassword(auth, email, password)
+        // .then(userCredential => {
+        //     const user = userCredential.user;
+        //     console.log(user);
+
+        //     // updateProfile 
+        //     updateProfile(user, {
+        //         displayName: name , photoURL: 'https://i.postimg.cc/D0SdCtvF/1675442698903.jpg'
+        //     })
+        //     .then( () => console.log('profile updated'))
+        //     .catch(error => console.log(error))
+
+        //     sendEmailVerification(user)
+        //     .then(() => {
+        //         alert('varification email sent')
+        //     })
+        //     .catch(error => console.log(error))
+        // })
+        // .catch(error => {
+        //     console.log(error);
+        // })
     }
 
     return (
