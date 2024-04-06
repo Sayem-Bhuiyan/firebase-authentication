@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
-    const {loginUser} = useContext(AuthContext)
+    const {loginUser, signInWithGoogle} = useContext(AuthContext)
     const navigate = useNavigate();
 
     const handleLogin = e => {
@@ -27,6 +27,18 @@ const Login = () => {
         .catch((error) => {
             console.log(error);
         })
+    }
+
+    const handleGoogleSignIn = () => {
+      signInWithGoogle()
+      .then(userCredential => {
+        const user = userCredential.user;
+        console.log(user);
+        navigate('/')
+      })
+      .catch(error => {
+        console.log(error);
+      })
     }
 
   return (
@@ -70,6 +82,7 @@ const Login = () => {
               <input className="btn btn-primary" type="submit" value="Login" />
             </div>
             <p>New users? <Link to="/register" className="underline" >Create an account</Link></p>
+            <p>Sign in with <button onClick={handleGoogleSignIn} className="btn btn-ghost">Google</button></p>
 
           </form>
           
